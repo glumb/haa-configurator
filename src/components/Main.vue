@@ -69,7 +69,9 @@ import { configurations } from '@/exampleConfigs'
 export default class Main extends Vue {
   public value: any = { c: {}, a: {} };
 
-  public types = types
+  get types(){
+    return types.filter(t=>t.name)
+  } 
   public configs = configurations
 
   public selectedConfig = 0

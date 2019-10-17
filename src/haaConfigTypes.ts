@@ -91,11 +91,15 @@ export interface baseAccessoryConfig {
    * 1: Switch
    * 2: Outlet
    */
-  t: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  t: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 20;
 
   b: Array<digitalInputConfig>;
 
-  i?: number
+  i?: number;
+
+  w?: 0 | 1 | 2 | 3;
+
+  d?: number
 }
 
 export interface baseTwoStateAccessoryConfig extends baseAccessoryConfig {

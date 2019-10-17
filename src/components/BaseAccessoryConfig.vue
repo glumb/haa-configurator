@@ -9,7 +9,31 @@
       <b-tag v-for="state in acessoryStates" :key="state.id" type="is-primary">{{ state.name }}</b-tag>
     </b-notification>
 
-    <b-field v-if="'inching' in acessoryType" label="Default State Time [s]" horizontal>
+    <b-field v-if="'valveTypes' in acessoryType" label="Valve Type" horizontal>
+      <b-select v-model="value.w" placeholder="Water Valve">
+        <option
+          v-for="option in acessoryType.valveTypes"
+          :key="option.id"
+          :value="option.id"
+        >{{ option.name }}</option>
+      </b-select>
+    </b-field>
+
+    <b-field v-if="value.t == 20" label="Maximum On Time [s]" horizontal>
+      <b-field v-if="'d' in value" grouped>
+        <b-numberinput
+          v-model="value.d"
+          min="0"
+          max="10000000"
+          controls-position="compact"
+          step="1"
+        />
+        <b-button @click="()=>value.d = 0">Disable Time</b-button>
+      </b-field>
+      <b-button v-else @click="()=>AddProp('d',3600)">Add</b-button>
+    </b-field>
+
+    <b-field v-if="'inching' in acessoryType" label="Reset to Default State Time [s]" horizontal>
       <b-field v-if="'i' in value" grouped>
         <b-numberinput
           v-model="value.i"
@@ -23,7 +47,7 @@
       <b-button v-else @click="()=>AddProp('i',1)">Add</b-button>
     </b-field>
 
-    <FormRebootStateConfig v-model="value" :reboot-states="rebootStates" />
+    <FormRebootStateConfig v-if="'reboot' in acessoryType" v-model="value" :reboot-states="rebootStates" />
     <FormIOs v-model="value" :acessory-states="acessoryStates" />
 
     <b-button type="is-danger" @click="()=>$emit('remove')">Remove Accessory</b-button>
@@ -107,9 +131,6 @@ export default class BaseAccessoryConfig extends Vue {
             { id: 1, name: 'Doublepress' },
             { id: 2, name: 'Longpress' }
           ],
-          reboot: [
-
-          ],
           defaults: {
             b: [],
             s: 0
@@ -150,14 +171,39 @@ export default class BaseAccessoryConfig extends Vue {
             { id: 0, name: 'disabled. Default' },
             { id: 1, name: 'enabled' }
           ],
-          reboot: [
-
-          ],
           defaults: {
             b: [],
             s: 0
           },
-                    inching: true,
+          inching: true,
+          description: ''
+        }
+      case 20:
+        return {
+          states: [
+            { id: 0, name: 'disabled. Default' },
+            { id: 1, name: 'enabled' }
+          ],
+                    reboot: [
+            { id: 0, name: 'Default - OFF.' },
+            { id: 1, name: 'ON.' },
+            { id: 4, name: 'Defined by fixed inputs.' },
+            { id: 5, name: 'Last state.' },
+            { id: 6, name: 'Opposite to last state.' }
+          ],
+          defaults: {
+            b: [],
+            s: 0,
+            w:0,
+            d:3600
+          },
+          valveTypes: [
+            { id: 0, name: 'Default. Water Valve' },
+            { id: 1, name: 'Sprinkler' },
+            { id: 2, name: 'Shower' },
+            { id: 3, name: 'Tap' }
+          ],
+          inching: true,
           description: ''
         }
       default:
@@ -166,7 +212,7 @@ export default class BaseAccessoryConfig extends Vue {
 
   }
 
-  @Prop({ type: Object, required: true, default: ()=>{} }) private readonly value!: baseAccessoryConfig
+  @Prop({ type: Object, required: true, default: () => { } }) private readonly value!: baseAccessoryConfig
 
 
   get acessoryStates() {
