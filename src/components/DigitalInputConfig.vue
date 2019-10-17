@@ -32,7 +32,7 @@ export default class DigitalInputConfig extends Vue {
   public types = [
     {
       id: 0,
-      name: 'Single activation, opposite to 1.'
+      name: 'Single activation. Falling Edge'
     },
     {
       id: 1,

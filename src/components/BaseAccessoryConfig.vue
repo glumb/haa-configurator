@@ -8,6 +8,21 @@
       {{ description }}
       <b-tag v-for="state in acessoryStates" :key="state.id" type="is-primary">{{ state.name }}</b-tag>
     </b-notification>
+
+    <b-field v-if="'inching' in acessoryType" label="Default State Time [s]" horizontal>
+      <b-field v-if="'i' in value" grouped>
+        <b-numberinput
+          v-model="value.i"
+          min="0"
+          max="10000000"
+          controls-position="compact"
+          step="0.01"
+        />
+        <b-button @click="()=>RemoveProp('i')">Rem Time</b-button>
+      </b-field>
+      <b-button v-else @click="()=>AddProp('i',1)">Add</b-button>
+    </b-field>
+
     <FormRebootStateConfig v-model="value" :reboot-states="rebootStates" />
     <FormIOs v-model="value" :acessory-states="acessoryStates" />
 
@@ -38,7 +53,7 @@ export default class BaseAccessoryConfig extends Vue {
 
   public types = types
 
-  get type(){
+  get type() {
     return this.value.t || 1
   }
 
@@ -62,6 +77,7 @@ export default class BaseAccessoryConfig extends Vue {
             b: [],
             s: 0
           },
+          inching: true,
           description: 'Type Switch has the states: '
         }
       case 2:
@@ -81,6 +97,7 @@ export default class BaseAccessoryConfig extends Vue {
             b: [],
             s: 0
           },
+          inching: true,
           description: 'An Outlet has the states '
         }
       case 3:
@@ -116,6 +133,7 @@ export default class BaseAccessoryConfig extends Vue {
             b: [],
             s: 0
           },
+          inching: true,
           description: 'A lock mechanism has the states '
         }
 
@@ -129,7 +147,7 @@ export default class BaseAccessoryConfig extends Vue {
       case 12:
         return {
           states: [
-            { id: 0, name: 'disabled' },
+            { id: 0, name: 'disabled. Default' },
             { id: 1, name: 'enabled' }
           ],
           reboot: [
@@ -139,6 +157,7 @@ export default class BaseAccessoryConfig extends Vue {
             b: [],
             s: 0
           },
+                    inching: true,
           description: ''
         }
       default:
@@ -147,7 +166,7 @@ export default class BaseAccessoryConfig extends Vue {
 
   }
 
-  @Prop({ type: Object, required: true }) private readonly value!: baseAccessoryConfig
+  @Prop({ type: Object, required: true, default: ()=>{} }) private readonly value!: baseAccessoryConfig
 
 
   get acessoryStates() {
