@@ -540,7 +540,10 @@ export default class BaseAccessoryConfig extends Vue {
             s: 0,
             p: 1024,
             d: 1,
-            e: 10
+            e: 10,
+            fr: 1,
+            fg: 1,
+            fv: 1
           },
           stateInputs: [
             { id: 0, name: 'Turns off lightbulb' },
