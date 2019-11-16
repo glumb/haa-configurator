@@ -2,20 +2,6 @@
   <div class="basic">
     <h5 class="title is-5">Digital Inputs</h5>
 
-    <b-notification
-      aria-close-label="Close notification"
-    >Cyclic Inputs advance the accessory state on activation. State Inputs change the acessory state to the target state.</b-notification>
-
-    <b-field label="Cyclic - Inputs" horizontal class="buttons-container">
-      <div v-for="(b, i) in value.b" :key="i">
-        <DigitalInputConfig v-model="value.b[i]" @remove="()=>RemoveEl(value.b, i)" />
-
-        <hr />
-      </div>
-
-      <b-button @click="()=>AddEl(value.b, value.b.length, { g:0, t:1 })">Add Cyclic Input</b-button>
-    </b-field>
-
     <div v-for="s in acessoryStates" :key="s.id + '-state'" class="acessory-states">
       <b-field :label="`${s.name} State - Input`" horizontal class="buttons-container">
         <div v-for="(b, i) in value[`f${s.id}`]" :key="s.id+'-'+i">

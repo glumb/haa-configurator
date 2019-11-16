@@ -48,6 +48,7 @@
     </b-field>
 
     <FormRebootStateConfig v-if="'reboot' in acessoryType" v-model="value" :reboot-states="rebootStates" />
+    <FormCyclicInputs v-if="'cyclic' in acessoryType" v-model="value" />
     <FormIOs v-model="value" :acessory-states="acessoryStates" />
 
     <b-button type="is-danger" @click="()=>$emit('remove')">Remove Accessory</b-button>
@@ -60,6 +61,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import DigitalInputConfig from '@/components/DigitalInputConfig.vue'
 import DigitalOutputConfig from '@/components/DigitalOutputConfig.vue'
 import FormIOs from '@/components/FormIOs.vue'
+import FormCyclicInputs from '@/components/FormCyclicInputs.vue'
 import FormRebootStateConfig from '@/components/FormRebootStateConfig.vue'
 
 import { haaConfig, generalConfig, baseAccessoryConfig, switchAccessoryConfig } from '@/haaConfigTypes'
@@ -70,6 +72,7 @@ import { types } from '@/accessoryTypes'
     DigitalInputConfig,
     FormRebootStateConfig,
     FormIOs,
+    FormCyclicInputs,
     DigitalOutputConfig
   }
 })
@@ -102,7 +105,8 @@ export default class BaseAccessoryConfig extends Vue {
             s: 0
           },
           inching: true,
-          description: 'Type Switch has the states: '
+          description: 'Type Switch has the states: ',
+          cyclic: true
         }
       case 2:
         return {
@@ -122,7 +126,8 @@ export default class BaseAccessoryConfig extends Vue {
             s: 0
           },
           inching: true,
-          description: 'An Outlet has the states '
+          description: 'An Outlet has the states ',
+          cyclic: true
         }
       case 3:
         return {
@@ -155,7 +160,8 @@ export default class BaseAccessoryConfig extends Vue {
             s: 0
           },
           inching: true,
-          description: 'A lock mechanism has the states '
+          description: 'A lock mechanism has the states ',
+          cyclic: true
         }
 
       case 5:
@@ -172,7 +178,6 @@ export default class BaseAccessoryConfig extends Vue {
             { id: 1, name: 'enabled' }
           ],
           defaults: {
-            b: [],
             s: 0
           },
           inching: true,
@@ -204,7 +209,8 @@ export default class BaseAccessoryConfig extends Vue {
             { id: 3, name: 'Tap' }
           ],
           inching: true,
-          description: ''
+          description: '',
+          cyclic: true
         }
       default:
         return { states: [], reboot: [], description: '', defaults: {} }
