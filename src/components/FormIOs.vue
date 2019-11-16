@@ -1,8 +1,8 @@
 <template>
   <div class="basic">
-    <h5 class="title is-5">Digital Inputs</h5>
+    <h5 v-if="actionInputs.length > 0" class="title is-5">Digital Inputs</h5>
 
-    <div v-for="s in acessoryStates" :key="s.id + '-state'" class="acessory-states">
+    <div v-for="s in actionInputs" :key="s.id + '-state'" class="acessory-states">
       <b-field :label="`${s.name} State - Input`" horizontal class="buttons-container">
         <div v-for="(b, i) in value[`f${s.id}`]" :key="s.id+'-'+i">
           <DigitalInputConfig
@@ -30,11 +30,14 @@
 
     <h5 class="title is-5">Digital Outputs</h5>
 
-    <div v-for="s in acessoryStates" :key="s.id+'-output'" class="acessory-states">
+    <div v-for="s in actionOutputs" :key="s.id+'-output'" class="acessory-states">
       <b-field :label="`${s.name} - Outputs`" horizontal class="buttons-container">
         <div v-if="value[s.id] && value[s.id].r">
           <div v-for="(b, i) in value[s.id].r" :key="s.id+'-'+i">
-            <DigitalOutputConfig v-model="value[s.id].r[i]" @remove="()=>RemoveEl(value[s.id].r, i)" />
+            <DigitalOutputConfig
+              v-model="value[s.id].r[i]"
+              @remove="()=>RemoveEl(value[s.id].r, i)"
+            />
             <hr />
           </div>
         </div>
@@ -72,7 +75,8 @@ import { haaConfig, generalConfig, baseAccessoryConfig, switchAccessoryConfig } 
 })
 export default class ButtonsAndState extends Vue {
 
-  @Prop({ type: Array, required: true, default: () => [] }) public readonly acessoryStates!: { id: number, name: string }[]
+  @Prop({ type: Array, required: true, default: () => [] }) public readonly actionOutputs!: { id: number, name: string }[]
+  @Prop({ type: Array, required: true, default: () => [] }) public readonly actionInputs!: { id: number, name: string }[]
 
 
   @Prop({ type: Object, required: true }) private readonly value!: any;

@@ -57,5 +57,21 @@ export const types = [
   {
     id: 20,
     name: 'Water Valve'
+  },
+  {
+    id: 21,
+    name: 'Thermostat'
+  },
+  {
+    id: 22,
+    name: 'Thermometer'
+  },
+  {
+    id: 23,
+    name: 'Humidity Sensor'
+  },
+  {
+    id: 24,
+    name: 'Thermometer & Humidity Sensor'
   }
 ]
