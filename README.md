@@ -1,5 +1,7 @@
 # HAA Configurator
 
+🚀 https://glumb.github.io/haa-configurator/
+
 This project is in early stage and active development. 
 If you encounter bugs or unexpected behavior please create an issue.
 
