@@ -445,11 +445,11 @@ export default class BaseAccessoryConfig extends Vue {
             { id: 5, name: 'Last state' }
           ],
           stateInputs: [
-            { id: 'f0', name: 'Set mode OFF' },
-            { id: 'f1', name: 'Set mode heater' },
-            { id: 'f2', name: 'Set mode cooler' },
-            { id: 'f3', name: 'Change target temperature by +0.5º' },
-            { id: 'f4', name: 'Change target temperature by -0.5º' }
+            { id: '0', name: 'Set mode OFF' },
+            { id: '1', name: 'Set mode heater' },
+            { id: '2', name: 'Set mode cooler' },
+            { id: '3', name: 'Change target temperature by +0.5º' },
+            { id: '4', name: 'Change target temperature by -0.5º' }
           ],
           defaults: {
             b: [],
