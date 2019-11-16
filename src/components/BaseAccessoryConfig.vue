@@ -115,71 +115,143 @@
 
     <!-- Inching -->
 
-    <b-field v-if="value.t == 20" label="Maximum On Time [s]" horizontal>
-      <b-field v-if="'d' in value" grouped>
-        <b-numberinput
-          v-model="value.d"
-          min="0"
-          max="10000000"
-          controls-position="compact"
-          step="1"
-        />
-        <b-button @click="()=>value.d = 0">Disable Time</b-button>
-      </b-field>
-      <b-button v-else @click="()=>AddProp('d',3600)">Add</b-button>
-    </b-field>
-
-    <b-field v-if="'inching' in acessoryType" label="Reset to Default State Time [s]" horizontal>
-      <b-field v-if="'i' in value" grouped>
-        <b-numberinput
-          v-model="value.i"
-          min="0"
-          max="10000000"
-          controls-position="compact"
-          step="0.01"
-        />
-        <b-button @click="()=>RemoveProp('i')">Rem Time</b-button>
-      </b-field>
-      <b-button v-else @click="()=>AddProp('i',1)">Add</b-button>
-    </b-field>
-
-    <FormRebootStateConfig
-      v-if="'reboot' in acessoryType"
-      v-model="value"
-      :reboot-states="rebootStates"
-    />
-
-    <div v-if="'cyclic' in acessoryType" class="basic">
-      <h5 class="title is-5">Cyclic Inputs</h5>
-
-      <b-notification
-        aria-close-label="Close notification"
-      >Cyclic Inputs advance the accessory state on activation. State Inputs change the acessory state to the target state.</b-notification>
-
-      <b-field label="States" horizontal>
-        <b-taglist>
-          <b-tag v-for="state in acessoryStates" :key="state.id" type="is-primary">{{ state.name }}</b-tag>
-        </b-taglist>
+    <div class="basic">
+      <b-field v-if="value.t == 20" label="Maximum On Time [s]" horizontal>
+        <b-field v-if="'d' in value" grouped>
+          <b-numberinput
+            v-model="value.d"
+            min="0"
+            max="10000000"
+            controls-position="compact"
+            step="1"
+          />
+          <b-button @click="()=>value.d = 0">Disable Time</b-button>
+        </b-field>
+        <b-button v-else @click="()=>AddProp('d',3600)">Add</b-button>
       </b-field>
 
-      <b-field label="Cyclic - Inputs" horizontal class="buttons-container">
-        <div v-for="(b, i) in value.b" :key="i">
-          <DigitalInputConfig v-model="value.b[i]" @remove="()=>RemoveEl(value.b, i)" />
-
-          <hr />
-        </div>
-
-        <b-button @click="()=>AddEl(value.b, value.b.length, { g:0, t:1 })">Add Cyclic Input</b-button>
+      <b-field v-if="'inching' in acessoryType" label="Reset to Default State Time [s]" horizontal>
+        <b-field v-if="'i' in value" grouped>
+          <b-numberinput
+            v-model="value.i"
+            min="0"
+            max="10000000"
+            controls-position="compact"
+            step="0.01"
+          />
+          <b-button @click="()=>RemoveProp('i')">Rem Time</b-button>
+        </b-field>
+        <b-button v-else @click="()=>AddProp('i',1)">Add</b-button>
       </b-field>
+
+      <FormRebootStateConfig
+        v-if="'reboot' in acessoryType"
+        v-model="value"
+        :reboot-states="rebootStates"
+      />
+
+      <!-- Autodimmer -->
+
+      <div v-if="'autodimmer' in acessoryType" class="basic">
+        <h5 class="title is-5">RGB GPIO</h5>
+
+        <b-notification aria-close-label="Close notification">
+          2-channels selectable temperature color: declare "v" for cool white and "w" for warm white.
+          <br />RGB: declare "r", "g" and "v" for Red, Green and Blue colors.
+          <br />RGBW: declare "r", "g", "v" and "w" for Red, Green, Blue and White colors.
+        </b-notification>
+
+        <b-field
+          v-for="(name ,channel) in {'r':'r','g':'g','v':'b','w':'w'}"
+          :key="channel"
+          :label="name.toUpperCase() + ' Channel'"
+          horizontal
+        >
+          <b-field v-if="channel in value" grouped>
+            <b-field label="GPIO">
+              <b-numberinput
+                v-model="value[channel]"
+                min="0"
+                max="254"
+                controls-position="compact"
+                step="1"
+              />
+            </b-field>
+            <b-field label="Factor">
+              <b-numberinput
+                v-model="value[`f${channel}`]"
+                min="0.01"
+                max="1000"
+                controls-position="compact"
+                step="0.01"
+              />
+            </b-field>
+            <b-field label="Action">
+              <b-button @click="()=>{RemoveProp(channel);RemoveProp(`f${channel}`)}">Rem Channel</b-button>
+            </b-field>
+          </b-field>
+          <b-button v-else @click="()=>{AddProp(channel,10);AddProp(`f${channel}`,1)}">Add</b-button>
+        </b-field>
+
+        <b-field label="Step Value" horizontal>
+          <b-numberinput
+            v-model="value.p"
+            min="1"
+            max="65535"
+            controls-position="compact"
+            step="1"
+          />
+        </b-field>
+        <b-field label="Step Delay [s]" horizontal>
+          <b-numberinput
+            v-model="value.d"
+            min="0.01"
+            max="65.5"
+            controls-position="compact"
+            step="0.01"
+          />
+        </b-field>
+        <b-field label="Autodimmer Step %" horizontal>
+          <b-numberinput v-model="value.e" min="1" max="50" controls-position="compact" step="1" />
+        </b-field>
+      </div>
+
+      <div v-if="'cyclic' in acessoryType" class="basic">
+        <h5 class="title is-5">Cyclic Inputs</h5>
+
+        <b-notification
+          aria-close-label="Close notification"
+        >Cyclic Inputs advance the accessory state on activation. State Inputs change the acessory state to the target state.</b-notification>
+
+        <b-field label="States" horizontal>
+          <b-taglist>
+            <b-tag
+              v-for="state in acessoryStates"
+              :key="state.id"
+              type="is-primary"
+            >{{ state.name }}</b-tag>
+          </b-taglist>
+        </b-field>
+
+        <b-field label="Cyclic - Inputs" horizontal class="buttons-container">
+          <div v-for="(b, i) in value.b" :key="i">
+            <DigitalInputConfig v-model="value.b[i]" @remove="()=>RemoveEl(value.b, i)" />
+
+            <hr />
+          </div>
+
+          <b-button @click="()=>AddEl(value.b, value.b.length, { g:0, t:1 })">Add Cyclic Input</b-button>
+        </b-field>
+      </div>
+
+      <FormIOs
+        v-model="value"
+        :action-inputs="acessoryType.stateInputs || acessoryType.states"
+        :action-outputs="acessoryType.states"
+      />
+
+      <b-button type="is-danger" @click="()=>$emit('remove')">Remove Accessory</b-button>
     </div>
-
-    <FormIOs
-      v-model="value"
-      :action-inputs="acessoryType.stateInputs || acessoryType.states"
-      :action-outputs="acessoryType.states"
-    />
-
-    <b-button type="is-danger" @click="()=>$emit('remove')">Remove Accessory</b-button>
   </div>
 </template>
 
@@ -448,6 +520,35 @@ export default class BaseAccessoryConfig extends Vue {
           },
           stateInputs: [],
           description: 'A HomeKit Thermometer & Humidity Sensor. It requires a compatible sensor.'
+        }
+      case 30:
+        return {
+          states: [
+            { id: 0, name: 'ON' },
+            { id: 1, name: 'OFF' }
+          ],
+          reboot: [
+            { id: 0, name: 'Default - OFF.' },
+            { id: 1, name: 'ON.' },
+            { id: 4, name: 'Defined by fixed inputs.' },
+            { id: 5, name: 'Last state.' },
+            { id: 6, name: 'Opposite to last state.' }
+          ],
+          autodimmer: true,
+          cyclic: true,
+          defaults: {
+            s: 0,
+            p: 1024,
+            d: 1,
+            e: 10
+          },
+          stateInputs: [
+            { id: 0, name: 'Turns off lightbulb' },
+            { id: 1, name: 'Turns on lightbulb' },
+            { id: 2, name: 'Increase brightness by 10%' },
+            { id: 3, name: 'Decrease brightness by 10%' }
+          ],
+          description: 'A HomeKit Dimmable Lightbulb with auto-dimmer managed by external switches/buttons. It can be Single Color, 2-channels selectable temperature color, RGB or RGBW. Hardware must be PWM controlled. Max total channels are 8.'
         }
       default:
         return { states: [], reboot: [], description: '', defaults: {} }

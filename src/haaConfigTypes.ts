@@ -91,7 +91,7 @@ export interface baseAccessoryConfig {
    * 1: Switch
    * 2: Outlet
    */
-  t: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 20 | 21 | 22 | 23 | 24;
+  t: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 20 | 21 | 22 | 23 | 24 | 30;
 
   b: Array<digitalInputConfig>;
 

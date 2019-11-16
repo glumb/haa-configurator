@@ -73,5 +73,14 @@ export const types = [
   {
     id: 24,
     name: 'Thermometer & Humidity Sensor'
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {
+    id: 30,
+    name: 'Lightbulb'
   }
 ]
