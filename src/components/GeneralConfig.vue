@@ -23,7 +23,15 @@
       <b-button v-else @click="()=>Add('f',10)">Add</b-button>
     </b-field>
 
-    <b-field label="Setup Mode Time" horizontal>
+    <b-field label="Custom PWM f" horizontal>
+      <b-field v-if="'q' in value" grouped>
+        <b-numberinput v-model="value['q']" min="1" max="65535" controls-position="compact" />
+        <b-button @click="()=>Remove('q')">remove</b-button>
+      </b-field>
+      <b-button v-else @click="()=>Add('q',10)">Add</b-button>
+    </b-field>
+
+    <b-field label="Setup Mode Time [s]" horizontal>
       <b-field v-if="'m' in value" grouped>
         <b-numberinput v-model="value.m" min="0" max="999999" controls-position="compact" />
         <b-button @click="()=>Remove('m')">remove</b-button>
