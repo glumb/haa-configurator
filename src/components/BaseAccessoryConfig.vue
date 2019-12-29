@@ -6,6 +6,19 @@
 
     <b-notification v-if="description" aria-close-label="Close notification">{{ description }}</b-notification>
 
+    <!-- Garaga -->
+    <b-field v-if="type == 40" label="Door obstruction Detection Time" horizontal>
+      <b-field v-if="'e' in value" grouped>
+        <b-numberinput v-model="value['e']" min="1" max="65535" controls-position="compact" step="0.01" />
+        <b-button @click="()=>RemoveProp('e')">Rem Detection</b-button>
+      </b-field>
+      <b-button v-else @click="()=>AddProp('e',0)">Add</b-button>
+    </b-field>
+    
+    <b-field v-if="type == 40" label="Door Working Time" horizontal>
+      <b-numberinput v-model="value['d']" min="1" max="65535" controls-position="compact" step="0.01" />
+    </b-field>
+
     <!-- Water Valve -->
     <b-field v-if="'valveTypes' in acessoryType" label="Valve Type" horizontal>
       <b-select v-model="value.w" placeholder="Water Valve">
@@ -544,7 +557,7 @@ export default class BaseAccessoryConfig extends Vue {
             fr: 1,
             fg: 1,
             fv: 1,
-            b:[]
+            b: []
           },
           stateInputs: [
             { id: 0, name: 'Turns off lightbulb' },
@@ -553,6 +566,50 @@ export default class BaseAccessoryConfig extends Vue {
             { id: 3, name: 'Decrease brightness by 10%' }
           ],
           description: 'A HomeKit Dimmable Lightbulb with auto-dimmer managed by external switches/buttons. It can be Single Color, 2-channels selectable temperature color, RGB or RGBW. Hardware must be PWM controlled. Max total channels are 8.'
+        }
+      case 40:
+        return {
+          states: [
+            { id: 0, name: 'Door is opened and receives closing order' },
+            { id: 1, name: 'Door is closed and receives opening order' },
+            { id: 2, name: 'Door is opening and receives closing order' },
+            { id: 3, name: 'Door is closing and receives opening order' },
+            { id: 4, name: 'Sensor detects opened door' },
+            { id: 5, name: 'Sensor detects closed door' },
+            { id: 6, name: 'Sensor detects opening door' },
+            { id: 7, name: 'Sensor detects closing door' },
+            { id: 8, name: 'Obstruction not detected' },
+            { id: 9, name: 'Obstruction detected' },
+            { id: 10, name: 'Emergency stop' }
+          ],
+          reboot: [
+            { id: 0, name: 'Open' },
+            { id: 1, name: 'Closed (default)' },
+            { id: 5, name: 'Last state before restart' },
+            { id: 6, name: 'Opposite to last state before restart' }
+          ],
+          cyclic: true,
+          defaults: {
+            s: 0,
+            d: 30,
+            b: []
+          },
+          stateInputs: [
+            { id: 0, name: 'Set garage door to open' },
+            { id: 1, name: 'Set garage door to close' },
+            { id: 2, name: 'Indicates that garage door is open' },
+            { id: 3, name: 'Indicates that garage door is closed' },
+            { id: 4, name: 'Indicates that garage door is opening' },
+            { id: 5, name: 'Indicates that garage door is closing' },
+            { id: 6, name: 'Indicates that there is not obstruction' },
+            { id: 7, name: 'Indicates that there is obstruction' },
+            { id: 8, name: 'Emergency stop' }
+          ],
+          description: `A HomeKit Garage Door accessory. This can be used to manage your actual garage door driver, or be a stand-alone fully working driver.
+
+If you don't use any sensor, or use only one, Door Working Time will be used to determine door state. If you use both sensors (for open and close: "f2" to "f5"), Door Working Time will be used as security measure alerting like a obstruction is detected if door does not complete operation before working time expires. If you also define an Obstruction Detection Time then the sum of the Working Time and Obstruction Detection Time is used.
+
+When an obstruction is detected, the door cannot be operated until the obstruction is removed.`
         }
       default:
         return { states: [], reboot: [], description: '', defaults: {} }

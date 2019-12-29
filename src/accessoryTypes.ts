@@ -82,5 +82,18 @@ export const types = [
   {
     id: 30,
     name: 'Lightbulb'
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {
+    id: 40,
+    name: 'Garage'
   }
 ]
