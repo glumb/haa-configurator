@@ -70,7 +70,7 @@
 
     <b-field v-if="'temperatureOffset' in acessoryType" label="Temperature Offset" horizontal>
       <b-field v-if="'z' in value" grouped>
-        <b-numberinput v-model="value.z" min="0" max="100" controls-position="compact" step="0.01" />
+        <b-numberinput v-model="value.z" min="-100" max="100" controls-position="compact" step="0.01" />
         <b-button @click="()=>RemoveProp('z')">Rem Offset</b-button>
       </b-field>
       <b-button v-else @click="()=>AddProp('z',0)">Add</b-button>
@@ -78,7 +78,7 @@
 
     <b-field v-if="'humidityOffset' in acessoryType" label="Humidity Offset" horizontal>
       <b-field v-if="'h' in value" grouped>
-        <b-numberinput v-model="value.h" min="0" max="100" controls-position="compact" step="0.01" />
+        <b-numberinput v-model="value.h" min="-100" max="100" controls-position="compact" step="0.01" />
         <b-button @click="()=>RemoveProp('h')">Rem Offset</b-button>
       </b-field>
       <b-button v-else @click="()=>AddProp('h',0)">Add</b-button>
