@@ -1,11 +1,16 @@
 # HAA Configurator
 
-🚀 https://glumb.github.io/haa-configurator/
+This project in currently outdated and unmaintained.
 
-This project is in early stage and active development. 
-If you encounter bugs or unexpected behavior please create an issue.
+To create HAA JSON scripts, you can use the new MEPLHAA Configurator:
 
-TODO
+🚀 https://haaconfig.github.io/meplhaa-configurator/
+
+## Web access
+
+https://glumb.github.io/haa-configurator/
+
+_Incompatible with recent HAA scripts._
 
 ## Project setup
 ```
